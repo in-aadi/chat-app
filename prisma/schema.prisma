@@ -28,7 +28,7 @@ model Server {
   id String @id @default(uuid())
   name String
   imageUrl String @db.Text
-  inviteCode String @db.Text
+  inviteCode String @unique
 
   profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -65,7 +65,7 @@ model Member {
   @@index([serverId])
 }
 
-enum ChanelType {
+enum ChannelType {
   TEXT 
   AUDIO
   VIDEO
@@ -74,7 +74,7 @@ enum ChanelType {
 model Channel {
   id String @id @default(uuid())
   name String
-  type ChanelType @default(TEXT)
+  type ChannelType @default(TEXT)
 
   profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)

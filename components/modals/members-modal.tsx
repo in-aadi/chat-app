@@ -58,7 +58,6 @@ export const MembersModal = () => {
 				url: `/api/members/${memberId}`,
 				query: {
 					serverId: server?.id,
-					memberId,
 				},
 			});
 			const response = await axios.patch(url, { role });
@@ -140,7 +139,7 @@ export const MembersModal = () => {
 										</DropdownMenu>
 									</div>
 								)}
-							{loadingId === member.id && <Loader2 className="h-4 w-4 " />}
+							{loadingId === member.id && <Loader2 className="h-4 w-4 animate-spin text-zinc-500 ml-auto" />}
 						</div>
 					))}
 				</ScrollArea>

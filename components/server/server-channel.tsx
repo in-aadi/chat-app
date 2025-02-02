@@ -19,7 +19,7 @@ const iconMap = {
 	[ChannelType.VIDEO]: Video,
 };
 
-export const ServerChannel = ({
+export const ServerChannel = ({ 
 	channel,
 	server,
 	role,

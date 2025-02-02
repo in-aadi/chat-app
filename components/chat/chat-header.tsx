@@ -4,7 +4,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { SocketIndicator } from "@/components/socket-indicator";
 
 interface ChatHeaderProps {
-	imageUrl: string;
+	imageUrl?: string;
 	serverId: string;
 	name: string;
 	type: "channel" | "conversation";

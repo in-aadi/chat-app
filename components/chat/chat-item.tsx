@@ -12,9 +12,10 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem } from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ChatItemProps {
 	id: string;
@@ -52,7 +53,7 @@ export const ChatItem = ({
 	socketQuery,
 }: ChatItemProps) => {
 	const [isEditing, setIsEditing] = useState(false);
-	const [isDeleting, setIsDeleting] = useState(false);
+	const { onOpen } = useModal();
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
@@ -102,7 +103,6 @@ export const ChatItem = ({
 	const isOwner = currentMember.id === member.id;
 	const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
 	const canEditMessage = !deleted && isOwner && !fileUrl;
-	// const isLoading = isUpdated && id === socketQuery.messageId;
 	const isPdf = fileType === "pdf" && fileUrl;
 	const isImage = !isPdf && fileUrl;
 
@@ -163,7 +163,7 @@ export const ChatItem = ({
 							)}
 						>
 							{content}
-							{isUpdated && !isDeleting && (
+							{isUpdated && !deleted && (
 								<span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
 									(edited)
 								</span>
@@ -216,7 +216,15 @@ export const ChatItem = ({
 						</ActionTooltip>
 					)}
 					<ActionTooltip label="Delete">
-						<Trash className="cursor-pointer ml-auto h-4 w-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition" />
+						<Trash
+							onClick={() =>
+								onOpen("deleteMessage", {
+									apiUrl: `${socketUrl}/${id}`,
+									query: socketQuery,
+								})
+							}
+							className="cursor-pointer ml-auto h-4 w-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
+						/>
 					</ActionTooltip>
 				</div>
 			)}
